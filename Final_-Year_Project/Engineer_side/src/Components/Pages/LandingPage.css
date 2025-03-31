@@ -49,6 +49,8 @@ body {
 
 
 .nav img {
+  background: white;
+  padding: .3em;
   height: 75px;
   width: auto;
   margin-left: 2rem;
@@ -56,6 +58,7 @@ body {
   position: relative;
   z-index: 2;
   border-radius: 10px;
+
 }
 
 .nav .h1_container {
