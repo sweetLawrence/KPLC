@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import SafetyDeclarationCard from '../Sections/SafetyDeclarationCard'
+
+import axios from 'axios'
 import './landing.css'
 import {
   Card,
@@ -10,12 +11,12 @@ import {
   Radio,
   NumberInput,
   Image,
-  Loader,
- 
+  Loader
 } from '@mantine/core'
 
 import LOGO from '../../assets/images/LOGO3.png'
 import ReceiptSection from '../Sections/ReceiptSection'
+import { useNavigate } from 'react-router-dom'
 
 const LandingPagexx = () => {
   // State for form data
@@ -34,11 +35,13 @@ const LandingPagexx = () => {
   const [issuedWithConsent, setIssuedWithConsent] = useState('')
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const [isApproved, setIsApproved] = useState(false)
+  const history = useNavigate()
 
   // Handle form submission
   const handleSubmit = async e => {
     e.preventDefault()
+
     setIsSubmitting(true)
     const formData = {
       workDetails: [workDetails.workDetail1, workDetails.workDetail2],
@@ -50,17 +53,41 @@ const LandingPagexx = () => {
       isIsolationB
     }
 
- 
+    // try {
+    //   const response = await axios.post('http://localhost:3001/api/submit-permit', formData);
+    //   console.log('Success:', response.data);
 
-    console.log('Form Data:', formData)
-    setTimeout(() => {
-      setIsSubmitting(false)
-    }, 3000)
+    // } catch (error) {
+    //   console.error('Error:', error.response ? error.response.data : error.message);
+
+    // } finally {
+    //   setIsSubmitting(false);
+    // }
+
+    try {
+      // Simulate a successful API call (replace with your actual Axios call)
+      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate 2 seconds delay for approval
+
+      // Set approval state to true after "approval" and show the success indicator
+      setIsApproved(true)
+
+      // After 2 seconds, navigate to the /landingpage
+      setTimeout(() => {
+        history('/landingpage') // Redirect to the landing page
+      }, 2000)
+    } catch (error) {
+      console.error('Error during submission', error)
+    } finally {
+      setIsSubmitting(false) // Hide loader after submission
+    }
+
+    // console.log('Form Data:', formData)
+    // setTimeout(() => {
+    //   setIsSubmitting(false)
+    // }, 3000)
   }
 
   return (
-
-    
     <div className='landing-page mx-auto'>
       <div className='header bg-[#f1f8ff] px-6 py-4  z-50 w-full sticky -top-[20%] left-0'>
         <div className='upper flex flex-col items-center justify-between py-3'>
@@ -282,22 +309,37 @@ const LandingPagexx = () => {
           Submit
         </Button>
       </form>
-      {isSubmitting && (
+      {/* {isSubmitting && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
-            <Loader size='lg' color='blue' className='mx-auto mb-4' />
+            <Loader size='lg' color='blue' className='mx-auto mb-4' type="dots" />
             <p className='text-lg font-semibold text-gray-700'>
               Waiting for approval...
             </p>
           </div>
         </div>
+      )} */}
+
+      {isSubmitting && (
+        <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
+          <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
+            {isApproved ? (
+              <>
+                <p className='text-lg font-semibold text-gray-700'>Approved</p>
+              </>
+            ) : (
+              <>
+                <Loader size='lg' color='blue' className='mx-auto mb-4' />
+                <p className='text-lg font-semibold text-gray-700'>
+                  Waiting for approval...
+                </p>
+              </>
+            )}
+          </div>
+        </div>
       )}
-
-
     </div>
-
   )
 }
-
 
 export default LandingPagexx
