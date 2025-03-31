@@ -1,0 +1,87 @@
+// 1.1
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const { email, password, confirmPassword, name } = formData;
+
+    //     // Validation
+    //     if (!email || !password) {
+    //         setError("Please enter both email and password");
+    //         return;
+    //     }
+
+    //     if (!isLogin && !name) {
+    //         setError("Please enter your name");
+    //         return;
+    //     }
+
+    //     if (!isLogin && password !== confirmPassword) {
+    //         setError("Passwords don't match");
+    //         return;
+    //     }
+
+    //     setIsLoading(true);
+    //     try {
+    //         if (isLogin) {
+    //             const response = await axios.get(`${Pockethost_URL}/api/collections/Nyandiga/records`, {
+    //                 params: {
+    //                     filter: `Email='${email}' && IdNumber='${password}'`
+    //                 }
+    //             });
+
+    //             if (response.data.items && response.data.items.length > 0) {
+    //                 const user = response.data.items[0];
+    //                 // Store user info and navigate - if server returned data, credentials are correct
+    //                 localStorage.setItem("authToken", user.id);
+    //                 localStorage.setItem("userName", user.Name);
+    //                 navigate("/landingpage");
+    //             } else {
+    //                 setError("Invalid username or password");
+    //             }
+    //         }else {
+    //             //sign up logic
+    //             //firt check if the email is already exist
+
+    //             const checkEmailResponse = await axios.get(`${Pockethost_URL}/api/collections/Nyandiga/records`, {
+    //                 params: {
+    //                     filter: `Email='${email}'`
+    //                 }
+    //             });
+
+    //             if (checkEmailResponse.data.items && checkEmailResponse.data.items.length > 0) {
+    //                 setError("Email already registered. Please sign in.");
+    //                 return;
+    //             }
+
+    //             //if email is not exist, then create a new user
+    //             const newUser = {
+    //                 Email: email,
+    //                 FirstName: name,
+    //                 IdNumber: password
+    //             };
+
+    //             const createResponse = await axios.post(`${Pockethost_URL}/api/collections/Nyandiga/records`, newUser);
+
+    //             if(createResponse.data.id){
+    //                 setSuccessMessage("Account created successfully. Please sign in.");
+    //                 setFormData({
+    //                     email: email,
+    //                     password: "",
+    //                     confirmPassword: "",
+    //                     name: ""
+    //                 });
+    //                 //switch to login mode
+    //                 setIsLogin(true);
+    //             } else {
+    //             setError("Failed to create account. Please try again.");
+    //         }
+    //     }
+    //     } catch (error) {
+    //         if (error.response && error.response.data && error.response.data.message) {
+    //             setError(error.response.data.message);
+    //         } else {
+    //             setError("An error occurred. Please try again.");
+    //         }
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
