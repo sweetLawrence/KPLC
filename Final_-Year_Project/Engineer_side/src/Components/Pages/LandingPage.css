@@ -1,10 +1,14 @@
 /* ElectricalPermitForm.css - KPLC Theme Version */
 
 :root {
-  --kplc-blue: #003366;      /* Dark blue from logo */
-  --kplc-light-blue: #0072bc; /* Medium blue from logo */
-  --kplc-yellow: #ffc107;    /* Yellow/gold from logo */
-  --kplc-green: #00a651;     /* Green from logo */
+  --kplc-blue: #003366;
+  /* Dark blue from logo */
+  --kplc-light-blue: #0072bc;
+  /* Medium blue from logo */
+  --kplc-yellow: #ffc107;
+  /* Yellow/gold from logo */
+  --kplc-green: #00a651;
+  /* Green from logo */
   --light-bg: #f8f9fa;
   --kplc-light: #ffffff;
   --kplc-dark: #001F3F;
@@ -14,8 +18,34 @@
   --kplc-gradient: linear-gradient(135deg, var(--kplc-blue) 0%, var(--kplc-dark) 100%);
 }
 
+
+input[type="radio"]:checked+label::before {
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+}
+
+/* Inner circle for checked radio */
+input[type="radio"]:checked+label::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+
+
+
+
+
 body {
- 
+
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
@@ -54,7 +84,7 @@ body {
   height: 75px;
   width: auto;
   margin-left: 2rem;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   position: relative;
   z-index: 2;
   border-radius: 10px;
@@ -79,7 +109,7 @@ body {
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .nav .h1_container h2 {
@@ -316,11 +346,20 @@ body {
 
 .declaration {
   display: flex;
+  /* background: pink; */
   margin-bottom: 10px;
 }
 
 .declaration-text {
   width: 50%;
+
+  /* background-color: red; */
+  & p {
+    /* color: red; */
+    font-weight: 700;
+    /* width: 70%; */
+  }
+
 }
 
 .declaration-text p {
@@ -338,6 +377,7 @@ body {
 .declaration-field {
   width: 50%;
   display: flex;
+  /* background: yellow; */
 }
 
 .bracket {
@@ -348,12 +388,16 @@ body {
 }
 
 .field-container {
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.field-container textarea, 
+.field-container textarea,
 .field-container input {
-  width: 100%;
+  /* width: 100%;
   border: none;
   border-bottom: 2px solid #c8d0d9;
   outline: none;
@@ -363,10 +407,14 @@ body {
   transition: var(--transition);
   background-color: #fff;
   border-radius: 4px 4px 0 0;
-  font-size: 14px;
+  font-size: 14px; */
+
+  margin-bottom: .8em;
 }
 
-.field-container textarea:focus, 
+.field-container .label {}
+
+.field-container textarea:focus,
 .field-container input:focus {
   border-bottom-color: var(--kplc-blue);
   background-color: rgba(0, 58, 112, 0.05);
@@ -383,6 +431,26 @@ body {
   border-radius: 4px;
   border-left: 4px solid var(--kplc-yellow);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Equipment field */
 .equipment-field {
@@ -515,8 +583,8 @@ body {
 }
 
 /* Receipt, Clearance and Cancellation sections */
-.receipt-section, 
-.clearance-section, 
+.receipt-section,
+.clearance-section,
 .cancellation-section {
   border-top: none;
   position: relative;
@@ -608,7 +676,8 @@ body {
 }
 
 /* Focus states */
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   border-bottom: 2px solid var(--kplc-blue);
 }
 
@@ -618,30 +687,30 @@ input:focus, textarea:focus {
   .nav {
     height: 70px;
   }
-  
+
   .nav img {
     height: 60px;
     margin-left: 1rem;
   }
-  
+
   .nav .h1_container {
     margin-left: 1rem;
   }
-  
+
   .nav .h1_container h1 {
     font-size: 1.5rem;
   }
-  
+
   .nav .h1_container h2 {
     font-size: 0.9rem;
   }
-  
+
   .nav::before {
     width: 24px;
     height: 44px;
     right: 18%;
   }
-  
+
   .nav::after {
     width: 35%;
   }
@@ -650,40 +719,43 @@ input:focus, textarea:focus {
     padding: 20px;
     margin: 15px auto;
   }
-  
+
   .form-title h1 {
     font-size: 22px;
   }
-  
+
   .section {
     padding: 15px;
   }
-  
+
   .declaration {
     flex-direction: column;
   }
-  
-  .declaration-text, .declaration-field {
+
+  .declaration-text,
+  .declaration-field {
     width: 100%;
   }
-  
+
   .bracket {
     display: none;
   }
-  
-  .consent, .datetime {
+
+  .consent,
+  .datetime {
     flex-direction: column;
   }
-  
-  .consent p, .datetime p {
+
+  .consent p,
+  .datetime p {
     margin: 8px 0;
   }
-  
+
   .engineer {
     text-align: left;
     margin-top: 10px;
   }
-  
+
   .permit-number {
     position: relative;
     top: 0;
@@ -695,21 +767,40 @@ input:focus, textarea:focus {
 
 /* Animation effects */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section {
   animation: fadeIn 0.5s ease forwards;
 }
 
-.section:nth-child(2) { animation-delay: 0.1s; }
-.section:nth-child(3) { animation-delay: 0.2s; }
-.section:nth-child(4) { animation-delay: 0.3s; }
-.section:nth-child(5) { animation-delay: 0.4s; }
+.section:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.section:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.section:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.section:nth-child(5) {
+  animation-delay: 0.4s;
+}
 
 /* Input hover effects */
-input:hover, textarea:hover {
+input:hover,
+textarea:hover {
   border-bottom-color: var(--kplc-light-blue);
 }
 

@@ -57,7 +57,7 @@ app.post('/create-user', async (req, res) => {
 
 app.get('/check-auth', (req, res) => {
   const token = req.cookies.auth_token
-  console.log(token)
+  console.log("x",token)
 
   if (!token) {
     return res.status(401).json({ error: 'Not authenticated' })
@@ -71,6 +71,11 @@ app.get('/check-auth', (req, res) => {
     res.status(401).json({ error: 'Invalid token' })
   }
 })
+
+// submit-permit
+
+const Permit = require('./routes/permits/submit-permit');
+app.use('/api',Permit)
 
 const Login = require('./routes/auth/login')
 app.use('/api', Login)

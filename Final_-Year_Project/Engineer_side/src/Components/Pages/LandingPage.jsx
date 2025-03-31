@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './LandingPage.css';
-import logo from '../../assets/images/LOGO3.png';
+import React, { useState, useEffect } from 'react'
+import './LandingPage.css'
+import logo from '../../assets/images/LOGO3.png'
 
 const LandingPage = () => {
   const [formData, setFormData] = useState({
@@ -23,102 +23,108 @@ const LandingPage = () => {
     cancellationEarthConnections: '',
     cancellationConsentPerson: '',
     cancellationSignature: ''
-  });
+  })
 
   useEffect(() => {
     // Apply styles when component mounts
-    document.body.style.backgroundColor = "#f8f9fa";
-    document.body.style.color = "#333";
-    document.body.style.marginTop = "90px";
+    document.body.style.backgroundColor = '#f8f9fa'
+    document.body.style.color = '#333'
+    document.body.style.marginTop = '90px'
     return () => {
       // Reset styles when component unmounts
-      document.body.style.backgroundColor = "";
-      document.body.style.color = "";
-      document.body.style.marginTop = "";
-    };
-  }, []);
+      document.body.style.backgroundColor = ''
+      document.body.style.color = ''
+      document.body.style.marginTop = ''
+    }
+  }, [])
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  const handleChange = e => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
 
   const handleArrayChange = (e, field, index) => {
-    const { value } = e.target;
+    const { value } = e.target
     setFormData(prev => {
-      const newArray = [...prev[field]];
-      newArray[index] = value;
-      return { ...prev, [field]: newArray };
-    });
-  };
+      const newArray = [...prev[field]]
+      newArray[index] = value
+      return { ...prev, [field]: newArray }
+    })
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log('Form submitted:', formData)
+
     // Here you would typically send the data to a server
-    alert("Permit form submitted successfully!");
-  };
+    alert('Permit form submitted successfully!')
+  }
 
   return (
     <>
-        <div className="nav">
-          <img src={logo} alt="LOGO" />
-          <div className="h1_container">
-            <h1>KENYA POWER </h1>
-            <h2>and LIGHTING COMPANY</h2>
-          </div>
+      <div className='nav'>
+        <img src={logo} alt='LOGO' />
+        <div className='h1_container'>
+          <h1>KENYA POWER </h1>
+          <h2>and LIGHTING COMPANY</h2>
         </div>
-      
+      </div>
 
-      <form onSubmit={handleSubmit} className="permit-form">
-        <div className="form-header">
-          <div className="company-info">
+      <form onSubmit={handleSubmit} className='permit-form'>
+        <div className='form-header'>
+          <div className='company-info'>
             <h2>The Kenya Power and Lighting Co. Ltd.</h2>
-            <p>OTHER RELEVANT<br />PERMIT NUMBERS</p>
+            <p>
+              OTHER RELEVANT
+              <br />
+              PERMIT NUMBERS
+            </p>
           </div>
         </div>
 
-        <div className="permit-number">
-          <p>No.
+        <div className='permit-number'>
+          <p>
+            No.
             <input
-              type="text"
-              name="permitNumber"
+              type='text'
+              name='permitNumber'
               value={formData.permitNumber}
               onChange={handleChange}
             />
           </p>
         </div>
 
-        <div className="form-title">
+        <div className='form-title'>
           <h1>Electrical Permit to Work</h1>
         </div>
 
-        <div className="section issue-section">
-          <p className="section-title">1. ISSUE</p>
-          <p>To
+        <div className='section issue-section'>
+          <p className='section-title'>1. ISSUE</p>
+          <p>
+            To
             <input
-              type="text"
-              name="issuedTo"
+              type='text'
+              name='issuedTo'
               // value={formData.issuedTo}
-              value={localStorage.getItem("userName")}
+              value={localStorage.getItem('userName')}
               onChange={handleChange}
-              placeholder="Name of person"
+              placeholder='Name of person'
             />
           </p>
           <p>For the following work to be carried out:-</p>
           {formData.workDetails.map((detail, index) => (
-            <div key={index} className="work-detail">
+            <div key={index} className='work-detail'>
               <input
-                type="text"
+                type='text'
                 value={detail}
-                onChange={(e) => handleArrayChange(e, 'workDetails', index)}
+                onChange={e => handleArrayChange(e, 'workDetails', index)}
                 placeholder={`Work detail ${index + 1}`}
               />
             </div>
           ))}
 
-          <div className="declaration-box">
+          {/* OLD */}
+          {/* <div className="declaration-box">
             <div className="declaration">
               <div className="declaration-text">
                 <p>A.</p>
@@ -136,53 +142,120 @@ const LandingPage = () => {
               </div>
             </div>
             <p className="warning">ALL OTHER PARTS ARE DANGEROUS</p>
-          </div>
+          </div> */}
+          {/* OLD */}
 
-          <div className="declaration-box">
-            <div className="declaration">
-              <div className="declaration-text">
-                <p>B.</p>
-                <p>I hereby declare that it is safe to work on the following H.V. Apparatus which is switched out, isolated from all live conductors and is connected to Earth.</p>
+          <div className='declaration-box'>
+            <div className='declaration'>
+              <div className='declaration-text'>
+                <p>A.</p>
+                <p>
+                  I hereby declare that it is safe to work within the following
+                  defined limits in the Proximity of Live HV / MV Apparatus.
+                </p>
               </div>
-              <div className="declaration-field">
-                <div className="bracket">&#125;</div>
-                <div className="field-container">
-                  <textarea
-                    name="safeHVApparatus"
-                    rows="2"
-                    placeholder="Define safe H.V. apparatus"
-                  ></textarea>
+              <div className='declaration-field'>
+                {/* <div className='bracket'>&#125;</div> */}
+                <div className='field-container'>
+                  <label>
+                    <input
+                      type='radio'
+                      name='safeWorkLimits'
+                      value='Yes'
+                      checked={formData.safeWorkLimits === 'Yes'}
+                      onChange={handleChange}
+                    />
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      type='radio'
+                      name='safeWorkLimits'
+                      value='No'
+                      checked={formData.safeWorkLimits === 'No'}
+                      onChange={handleChange}
+                    />
+                    No
+                  </label>
                 </div>
               </div>
             </div>
-            <p className="warning">ALL OTHER PARTS ARE DANGEROUS</p>
+            <p className='warning'>ALL OTHER PARTS ARE DANGEROUS</p>
           </div>
 
-          <div className="equipment-field">
-            <p>MV/LV Equipment isolated and earthed
+          <div className='declaration-box'>
+            <div className='declaration'>
+              <div className='declaration-text'>
+                <p>B.</p>
+                <p>
+                  I hereby declare that it is safe to work on the following H.V.
+                  Apparatus which is switched out, isolated from all live
+                  conductors and is connected to Earth.
+                </p>
+              </div>
+              <div className='declaration-field'>
+                <div className='bracket'>&#125;</div>
+                <div className='field-container'>
+
+                <div className='declaration-field'>
+                {/* <div className='bracket'>&#125;</div> */}
+                <div className='field-container'>
+                  <label>
+                    <input
+                      type='radio'
+                      name='safeHVApparatus'
+                      value='Yes'
+                      checked={formData.safeH === 'Yes'}
+                      onChange={handleChange}
+                    />
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      type='radio'
+                      name='safeHVApparatus'
+                      value='No'
+                      checked={formData.safeWorkLimits === 'No'}
+                      onChange={handleChange}
+                    />
+                    No
+                  </label>
+                </div>
+              </div>
+
+        
+                </div>
+              </div>
+            </div>
+            <p className='warning'>ALL OTHER PARTS ARE DANGEROUS</p>
+          </div>
+
+          <div className='equipment-field'>
+            <p>
+              MV/LV Equipment isolated and earthed
               <input
-                type="text"
-                name="mvlvEquipment"
+                type='text'
+                name='mvlvEquipment'
                 value={formData.mvlvEquipment}
                 onChange={handleChange}
               />
             </p>
           </div>
 
-          <div className="declaration-box">
-            <div className="declaration">
-              <div className="declaration-text">
+          <div className='declaration-box'>
+            <div className='declaration'>
+              <div className='declaration-text'>
                 <p>Circuit Main Earths have been at the following points</p>
               </div>
-              <div className="declaration-field">
-                <div className="bracket">&#125;</div>
-                <div className="field-container">
+              <div className='declaration-field'>
+                <div className='bracket'>&#125;</div>
+                <div className='field-container'>
                   {formData.earthPoints.map((point, index) => (
                     <input
                       key={index}
-                      type="text"
+                      type='text'
                       value={point}
-                      onChange={(e) => handleArrayChange(e, 'earthPoints', index)}
+                      onChange={e => handleArrayChange(e, 'earthPoints', index)}
                       placeholder={`Earth point ${index + 1}`}
                     />
                   ))}
@@ -191,59 +264,61 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div className="additional-info">
-            <p>No. of additional earth connections issue
+          <div className='additional-info'>
+            <p>
+              No. of additional earth connections issue
               <input
-                type="text"
-                name="additionalEarthConnections"
+                type='text'
+                name='additionalEarthConnections'
                 value={formData.additionalEarthConnections}
                 onChange={handleChange}
               />
             </p>
-            <div className="consent">
-              <p>Issued with the consent of
+            <div className='consent'>
+              <p>
+                Issued with the consent of
                 <input
-                  type="text"
-                  name="consentPerson"
+                  type='text'
+                  name='consentPerson'
                   value={formData.consentPerson}
                   onChange={handleChange}
                 />
               </p>
-              <p className="engineer">System Control Engineer.</p>
+              <p className='engineer'>System Control Engineer.</p>
             </div>
-            <div className="signature-line">
+            <div className='signature-line'>
               <div>
-                <p>Signed
-                  <input
-                    type="text"
-                    name="issueSignature"
-                  />
+                <p>
+                  Signed
+                  <input type='text' name='issueSignature' />
                 </p>
-                <p className="role">being an Authorised Person.</p>
+                <p className='role'>being an Authorised Person.</p>
               </div>
             </div>
 
-            <div className="datetime">
+            <div className='datetime'>
               <div>
-                <p>Time
+                <p>
+                  Time
                   <input
-                    type="time"
-                    name="issueTime"
+                    type='time'
+                    name='issueTime'
                     value={formData.issueTime}
                     onChange={handleChange}
-                    className="highlighted"
+                    className='highlighted'
                   />
                   Hrs.
                 </p>
               </div>
               <div>
-                <p>Date
+                <p>
+                  Date
                   <input
-                    type="date"
-                    name="issueDate"
+                    type='date'
+                    name='issueDate'
                     value={formData.issueDate}
                     onChange={handleChange}
-                    className="highlighted"
+                    className='highlighted'
                   />
                 </p>
               </div>
@@ -251,30 +326,37 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="section receipt-section">
-          <p className="section-title">2. RECEIPT</p>
-          <p className="declaration-text">I hereby declare that I accept responsibility for carrying out the work on the Apparatus detailed on this Permit, and that no attempt will be made by me, or by any man under my control, to carry out work on any other apparatus.</p>
+        <div className='section receipt-section'>
+          <p className='section-title'>2. RECEIPT</p>
+          <p className='declaration-text'>
+            I hereby declare that I accept responsibility for carrying out the
+            work on the Apparatus detailed on this Permit, and that no attempt
+            will be made by me, or by any man under my control, to carry out
+            work on any other apparatus.
+          </p>
 
-          <div className="signature-line">
+          <div className='signature-line'>
             <div>
-              <p>Signed
+              <p>
+                Signed
                 <input
-                  type="text"
-                  name="receiptSignature"
+                  type='text'
+                  name='receiptSignature'
                   value={formData.receiptSignature}
                   onChange={handleChange}
                 />
               </p>
-              <p className="role">being the Person in Charge of the Work.</p>
+              <p className='role'>being the Person in Charge of the Work.</p>
             </div>
           </div>
 
-          <div className="datetime">
+          <div className='datetime'>
             <div>
-              <p>Time
+              <p>
+                Time
                 <input
-                  type="time"
-                  name="receiptTime"
+                  type='time'
+                  name='receiptTime'
                   value={formData.receiptTime}
                   onChange={handleChange}
                 />
@@ -282,10 +364,11 @@ const LandingPage = () => {
               </p>
             </div>
             <div>
-              <p>Date
+              <p>
+                Date
                 <input
-                  type="date"
-                  name="receiptDate"
+                  type='date'
+                  name='receiptDate'
                   value={formData.receiptDate}
                   onChange={handleChange}
                 />
@@ -294,75 +377,85 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="section clearance-section">
-          <p className="section-title">3. CLEARANCE</p>
-          <p className="declaration-text">I hereby declare that all men under my charge have been withdrawn and warned that it is NO LONGER SAFE to work on the apparatus specified on the P.T.W. and that all gear, tool and ADDITIONAL EARTH CONNECTION are clear and have been checked in.</p>
+        <div className='section clearance-section'>
+          <p className='section-title'>3. CLEARANCE</p>
+          <p className='declaration-text'>
+            I hereby declare that all men under my charge have been withdrawn
+            and warned that it is NO LONGER SAFE to work on the apparatus
+            specified on the P.T.W. and that all gear, tool and ADDITIONAL EARTH
+            CONNECTION are clear and have been checked in.
+          </p>
 
-          <div className="signature-line">
+          <div className='signature-line'>
             <div>
-              <p>Signed
+              <p>
+                Signed
                 <input
-                  type="text"
-                  name="clearanceSignature"
+                  type='text'
+                  name='clearanceSignature'
                   value={formData.clearanceSignature}
                   onChange={handleChange}
                 />
               </p>
-              <p className="role">being the Person in Charge of the Work.</p>
+              <p className='role'>being the Person in Charge of the Work.</p>
             </div>
           </div>
 
-          <div className="datetime">
+          <div className='datetime'>
             <div>
-              <p>Time
+              <p>
+                Time
                 <input
-                  type="time"
-                  name="clearanceTime"
+                  type='time'
+                  name='clearanceTime'
                   value={formData.clearanceTime}
                   onChange={handleChange}
-                  className="highlighted"
+                  className='highlighted'
                 />
                 Hrs.
               </p>
             </div>
             <div>
-              <p>Date
+              <p>
+                Date
                 <input
-                  type="date"
-                  name="clearanceDate"
+                  type='date'
+                  name='clearanceDate'
                   value={formData.clearanceDate}
                   onChange={handleChange}
-                  className="highlighted"
+                  className='highlighted'
                 />
               </p>
             </div>
           </div>
         </div>
 
-        <div className="section cancellation-section">
-          <p className="section-title">4. CANCELLATION</p>
-          <p className="declaration-text">I hereby declare that I have checked in
+        <div className='section cancellation-section'>
+          <p className='section-title'>4. CANCELLATION</p>
+          <p className='declaration-text'>
+            I hereby declare that I have checked in
             <input
-              type="text"
-              name="cancellationEarthConnections"
+              type='text'
+              name='cancellationEarthConnections'
               value={formData.cancellationEarthConnections}
               onChange={handleChange}
             />
             additional Earth Connections and that with the Consent of
             <input
-              type="text"
-              name="cancellationConsentPerson"
+              type='text'
+              name='cancellationConsentPerson'
               value={formData.cancellationConsentPerson}
               onChange={handleChange}
             />
             System Control Engineer, this Permit and all copies are cancelled.
           </p>
 
-          <div className="signature-line">
-            <p>Signed
+          <div className='signature-line'>
+            <p>
+              Signed
               <input
-                type="text"
-                name="cancellationSignature"
+                type='text'
+                name='cancellationSignature'
                 value={formData.cancellationSignature}
                 onChange={handleChange}
               />
@@ -370,12 +463,12 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className="form-footer">
-          <button type="submit">Submit Permit Form</button>
+        <div className='form-footer'>
+          <button type='submit'>Submit Permit Form</button>
         </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default LandingPage;
+export default LandingPage
