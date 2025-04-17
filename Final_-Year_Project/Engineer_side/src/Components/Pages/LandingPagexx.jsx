@@ -101,8 +101,8 @@ const LandingPagexx = () => {
       const permitId = localStorage.getItem('permitId');
       if (permitId) {
         // Call your API to check the status
-        axios
-          .get(`http://localhost:3001/api/check-status/${permitId}`)
+        axiosInstance
+          .get(`/api/check-status/${permitId}`)
           .then(response => {
             const status = response.data.status;
             if (status === 'approved') {
