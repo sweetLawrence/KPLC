@@ -125,15 +125,17 @@ const LandingPagexx = () => {
 
   return (
     <div className='landing-page mx-auto'>
-      <div className='header bg-[#f1f8ff] px-6 py-4  z-50 w-full sticky -top-[20%] left-0'>
-        <div className='upper flex flex-col items-center justify-between py-3'>
+      {/* <div className='header bg-[#f1f8ff] px-6 py-4  z-50 w-full sticky -top-[20%] left-0 shadow-md'> */}
+      <div className='header bg-[#f1f8ff] px-6 py-4 z-50 w-full sticky top-0 left-0 shadow-md'>
+        <div className='upper flex flex-col items-center justify-between py-1'>
           <div className='flex items-center justify-between w-full'>
-            <h2 className='text-[#002b57] font-bold text-[1.5em] flex items-center'>
-              <span className='text-[#002b57] font-extrabold mr-2'>
-                <Image src={LOGO} className='scale-75' />
+            <h2 className='text-[#002b57] font-bold flex items-center bg-rd-300 w-full h-[50px]'>
+              <span className='text-[#002b57] font-extrabold mx-auto'>
+                <Image src={LOGO} className='scale-30 object-cover bg-ambr-200' />
               </span>
               <span className='text-[#002b57]'>
-                The Kenya Power and Lighting Co. Ltd.
+                {/* The Kenya Power and Lighting Co. Ltd. */}
+                {/* KPLC */}
               </span>
             </h2>
           </div>
