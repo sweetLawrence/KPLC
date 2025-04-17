@@ -29,8 +29,10 @@ app.use(cookieParser())
 // }
 
 const corsOptions = {
-  origin: (process.env.NODE_ENV === 'development') ? ['http://localhost:5173','http://localhost:5174'] : 'https://kplc-permit.vercel.app', // Allow all origins in development, restrict in production
+  // origin: (process.env.NODE_ENV === 'development') ? ['http://localhost:5173','http://localhost:5174'] : 'https://kplc-permit.vercel.app', // Allow all origins in development, restrict in production
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://kplc-permit.vercel.app'],
   credentials: true, // Allow cookies
+
 };
 
 app.use(cors(corsOptions))
