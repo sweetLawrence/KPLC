@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const getBaseURL = () => {
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    return isLocalhost ? 'http://localhost:3001' : 'hhttp://localhost:3001';
+    return isLocalhost ? 'http://localhost:3001' : 'https://b85e-102-212-236-175.ngrok-free.app';
   };
 
   const getToken = () => {
