@@ -140,7 +140,8 @@ const LandingPagexx = () => {
             </h2>
           </div>
           <div className='text-[#002b57] font-bold text-[0.9em] mt-2'>
-            Number: LLA 25
+            {/* Number: LLA 25 */}
+            Number: {localStorage.getItem('permitNumber')}
           </div>
         </div>
 

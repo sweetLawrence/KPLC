@@ -348,6 +348,8 @@ function Login() {
             );
             console.log(response.data)
             if (response.status === 200) {
+                console.log(response.data)
+                localStorage.setItem("permitNumber", response.data?.permitNumber);
                 localStorage.setItem("authToken", response.data.id);
                 localStorage.setItem("userRole", response.data.role);
                 localStorage.setItem("userName", response.data.name);

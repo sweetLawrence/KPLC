@@ -84,6 +84,23 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     })
 
+
+
+    Permit.beforeCreate(async (permit, options) => {
+      const latestPermit = await Permit.findOne({
+        order: [['createdAt', 'DESC']],
+      });
+  
+      let nextNumber = 1;
+  
+      if (latestPermit && latestPermit.permitNumber) {
+        const lastNum = parseInt(latestPermit.permitNumber.replace('LLA ', '')) || 0;
+        nextNumber = lastNum + 1;
+      }
+  
+      permit.permitNumber = `LLA ${nextNumber}`;
+    });
+
     // Permit.hasMany(models.EarthPoint, {
     //   foreignKey: 'permitId',
     //   onDelete: 'CASCADE'
