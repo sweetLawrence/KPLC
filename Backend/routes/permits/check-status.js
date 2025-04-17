@@ -44,7 +44,7 @@ router.get('/check-status/:permitId', async (req, res) => {
 
 
 router.get('/permits', async (req, res) => {
-    console.log('BENDIIIIIIIIIIIIIIIII')
+    // console.log('BENDIIIIIIIIIIIIIIIII')
     try {
       const allPermits = await Permit.findAll({
         include: [
