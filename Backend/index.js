@@ -75,7 +75,11 @@ app.post('/create-user', async (req, res) => {
 
 app.get('/check-auth', (req, res) => {
   const token = req.cookies.auth_token
-  console.log("x",token)
+
+  console.log("&&&&&&&&")
+  console.log("CHEEEEEEEKED",token)
+  console.log(req.cookies)
+  console.log("&&&&&&&&")
 
   if (!token) {
     return res.status(401).json({ error: 'Not authenticated' })

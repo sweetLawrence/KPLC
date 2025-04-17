@@ -308,7 +308,7 @@ function Login() {
                 // const response = await axios.get("http://localhost:3001/check-auth", { withCredentials: true });
                 // console.log(response.data)
                 if (response.status === 200) {
-                    alert(response.status)
+                    // alert(response.status)
                     localStorage.setItem("authToken", response.data.id);
                     localStorage.setItem("userRole", response.data.role);
                     // navigate("/landingpage"); // Redirect to main page

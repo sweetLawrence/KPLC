@@ -37,7 +37,8 @@ const loginUser = async (req, res, model) => {
         const token = tokenize(user.id, user.email, user.role);
 
         // res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' });
-        res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
+        // res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax' });
+        res.cookie('auth_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'None',secure: true, });
         res.status(200).json({id:user.id, message: `success`,name:user.name,role:user.role, permitNumber: nextPermitNumber, });
 
     } catch (error) {
