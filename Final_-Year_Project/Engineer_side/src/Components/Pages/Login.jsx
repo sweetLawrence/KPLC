@@ -284,6 +284,7 @@ import LockIcon from "../../assets/icons/LockIcon";
 import EmailIcon from "../../assets/icons/EmailIcon";
 import PasswordIcon from "../../assets/icons/PasswordIcon";
 import "./Login.css";
+import axiosInstance from "../../utils/axios";
 
 function Login() {
     const [formData, setFormData] = useState({ email: "", password: "" });
@@ -303,7 +304,8 @@ function Login() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const response = await axios.get("http://localhost:3001/check-auth", { withCredentials: true });
+                const response = await axiosInstance.get("/check-auth", { withCredentials: true });
+                // const response = await axios.get("http://localhost:3001/check-auth", { withCredentials: true });
                 // console.log(response.data)
                 if (response.status === 200) {
                     localStorage.setItem("authToken", response.data.id);
@@ -333,12 +335,17 @@ function Login() {
 
         setIsLoading(true);
         try {
-            const response = await axios.post(
-                "http://localhost:3001/api/login",
+            // const response = await axios.post(
+            //     "http://localhost:3001/api/login",
+            //     formData,
+            //     { withCredentials: true }
+            // );
+
+            const response = await axiosInstance.post(
+               "/api/login",
                 formData,
                 { withCredentials: true }
             );
-
             console.log(response.data)
             if (response.status === 200) {
                 localStorage.setItem("authToken", response.data.id);

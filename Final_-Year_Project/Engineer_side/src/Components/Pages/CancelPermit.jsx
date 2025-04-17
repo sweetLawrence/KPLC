@@ -12,6 +12,7 @@ import LOGO from '../../assets/images/LOGO3.png'
 import { Toaster, toast } from 'sonner'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../../utils/axios'
 
 const CancelPermit = () => {
   const [isChecked, setIsChecked] = useState(false)
@@ -32,8 +33,13 @@ const CancelPermit = () => {
     }
 
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/cancel-permit',
+      // const response = await axios.post(
+      //   'http://localhost:3001/api/cancel-permit',
+      //   formData,
+      //   { withCredentials: true }
+      // )
+      const response = await axiosInstance.post(
+        '/api/cancel-permit',
         formData,
         { withCredentials: true }
       )

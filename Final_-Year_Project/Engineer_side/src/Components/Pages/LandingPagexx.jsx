@@ -19,6 +19,7 @@ import LOGO from '../../assets/images/LOGO3.png'
 import ReceiptSection from '../Sections/ReceiptSection'
 import { useNavigate } from 'react-router-dom'
 import { CheckCircle } from 'lucide-react';
+import axiosInstance from '../../utils/axios'
 
 const LandingPagexx = () => {
   // State for form data
@@ -67,8 +68,12 @@ const LandingPagexx = () => {
     console.log(formData)
 
     try {
-      const response = await axios.post(
-        'http://localhost:3001/api/submit-permit',
+      // const response = await axios.post(
+      //   'http://localhost:3001/api/submit-permit',
+      //   formData
+      // )
+      const response = await axiosInstance.post(
+        '/api/submit-permit',
         formData
       )
       if (response) {

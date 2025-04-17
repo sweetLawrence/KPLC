@@ -16,12 +16,28 @@ const bcrypt = require('bcrypt')
 app.use(express.json())
 app.use(cookieParser())
 // app.use(cors())
+// const corsOptions = {
+//   origin: ['http://localhost:5173','http://localhost:5174'],
+//   credentials: true
+// }
+// app.use(cors(corsOptions))
+// app.options('*', cors(corsOptions))
+
+// const corsOptions = {
+//   origin: '*', // Allows all origins
+//   credentials: true // Optionally, allow credentials like cookies or HTTP authentication
+// }
+
 const corsOptions = {
-  origin: ['http://localhost:5173','http://localhost:5174'],
-  credentials: true
-}
+  origin: (process.env.NODE_ENV === 'development') ? ['http://localhost:5173','http://localhost:5174'] : 'https://kplc-permit.vercel.app', // Allow all origins in development, restrict in production
+  credentials: true, // Allow cookies
+};
+
 app.use(cors(corsOptions))
 app.options('*', cors(corsOptions))
+
+
+
 
 app.get('/', (req, res) => {
   res.json({ message: 'Hello My App' })
