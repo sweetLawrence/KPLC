@@ -108,7 +108,7 @@ const CancelPermit = () => {
         className='w-full max-w-md mx-auto border border-gray-300 mb-4'
       >
         {/* Clearance Section */}
-        <Text className='text-lg font-semibold mb-2'>3. CLEARANCE</Text>
+        <Text className='text-lg font-bold mb-2 text-[#002b57]'>CLEARANCE</Text>
         <Text className='text-gray-700 mb-4'>
           I hereby declare that all men under my charge have been withdrawn and
           warned that it is NO LONGER SAFE to work on the apparatus specified on
@@ -123,7 +123,7 @@ const CancelPermit = () => {
         />
 
         {/* Cancellation Section */}
-        <Text className='text-lg font-semibold mb-2 mt-6'>4. CANCELLATION</Text>
+        <Text className='text-lg font-bold mb-2 mt-6 text-[#002b57]'>CANCELLATION</Text>
         <Text className='text-gray-700 mb-4'>
           I hereby declare that I have checked in{' '}
           <Input

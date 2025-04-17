@@ -164,7 +164,7 @@ const LandingPagexx = () => {
             {localStorage.getItem('userName')}
           </Text>
 
-          <Text className='text-lg font-semibold'>Substation</Text>
+          <Text className='text-lg font-bold text-[#002b57]'>Substation</Text>
           {/* <Text className='text-gray-700 mb-4'>Githunguri </Text> */}
           <TextInput
             // label='Work Detail 1'
@@ -174,7 +174,7 @@ const LandingPagexx = () => {
             className='mb-3'
           />
 
-          <Text className='text-lg font-semibold mb-2'>
+          <Text className='text-lg font-bold mb-2 text-[#002b57]'>
             For the following work to be carried out:
           </Text>
 
@@ -327,7 +327,7 @@ const LandingPagexx = () => {
           radius='md'
           className='w-full max-w-md mx-auto border border-gray-300 mb-4'
         >
-          <Text className='text-lg font-semibold mb-2'>
+          <Text className='text-lg font-bold mb-2 text-[#002b57]'>
             No. of Additional Earth Connections
           </Text>
           <Text className='text-gray-700 mb-4'>
