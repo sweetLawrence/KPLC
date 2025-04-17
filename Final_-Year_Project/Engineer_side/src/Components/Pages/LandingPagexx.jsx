@@ -53,7 +53,7 @@ const LandingPagexx = () => {
     setIsSubmitting(true)
     const formData = {
       userId: localStorage.getItem('authToken'),
-      permitNumber: 'LLA 364',
+      // permitNumber: 'LLA 364',
       issuedTo: localStorage.getItem('userName'),
       substation,
       workDetails: [workDetails.workDetail1, workDetails.workDetail2],
