@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import axios from 'axios'
+import { Toaster, toast } from 'sonner'
 import './landing.css'
 import {
   Card,
@@ -17,13 +18,18 @@ import {
 import LOGO from '../../assets/images/LOGO3.png'
 import ReceiptSection from '../Sections/ReceiptSection'
 import { useNavigate } from 'react-router-dom'
+import { CheckCircle } from 'lucide-react';
 
 const LandingPagexx = () => {
   // State for form data
   const [workDetails, setWorkDetails] = useState({
     workDetail1: '',
-    workDetail2: ''
+    workDetail2: '',
+    workDetail3: ''
   })
+
+  const [substation, setSubstation] = useState('')
+
   const [earthPoints, setEarthPoints] = useState({
     earthPoint1: '',
     earthPoint2: ''
@@ -35,6 +41,7 @@ const LandingPagexx = () => {
   const [issuedWithConsent, setIssuedWithConsent] = useState('')
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [resp, setResp] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
   const history = useNavigate()
 
@@ -44,6 +51,10 @@ const LandingPagexx = () => {
 
     setIsSubmitting(true)
     const formData = {
+      userId: localStorage.getItem('authToken'),
+      permitNumber: 'LLA 364',
+      issuedTo: localStorage.getItem('userName'),
+      substation,
       workDetails: [workDetails.workDetail1, workDetails.workDetail2],
       earthPoints: [earthPoints.earthPoint1, earthPoints.earthPoint2],
       isMVLVIsolated,
@@ -53,39 +64,59 @@ const LandingPagexx = () => {
       isIsolationB
     }
 
-    // try {
-    //   const response = await axios.post('http://localhost:3001/api/submit-permit', formData);
-    //   console.log('Success:', response.data);
-
-    // } catch (error) {
-    //   console.error('Error:', error.response ? error.response.data : error.message);
-
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+    console.log(formData)
 
     try {
-      // Simulate a successful API call (replace with your actual Axios call)
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate 2 seconds delay for approval
+      const response = await axios.post(
+        'http://localhost:3001/api/submit-permit',
+        formData
+      )
+      if (response) {
+        localStorage.setItem('permitId', response.data.permit.id)
+        setResp(true)
+        const status = response.data.permit.status
 
-      // Set approval state to true after "approval" and show the success indicator
-      setIsApproved(true)
-
-      // After 2 seconds, navigate to the /landingpage
-      setTimeout(() => {
-        history('/landingpage') // Redirect to the landing page
-      }, 2000)
+        let approved =
+          status == 'pending' ? setIsApproved(false) : setIsApproved(true)
+        // setIsSubmitting(false)
+      }
+      console.log('Success:', response.data.permit)
     } catch (error) {
-      console.error('Error during submission', error)
-    } finally {
-      setIsSubmitting(false) // Hide loader after submission
+      console.error(
+        'Error:',
+        error.response ? error.response.data : error.message
+      )
     }
-
-    // console.log('Form Data:', formData)
-    // setTimeout(() => {
-    //   setIsSubmitting(false)
-    // }, 3000)
   }
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Get the permitId from localStorage
+      const permitId = localStorage.getItem('permitId');
+      if (permitId) {
+        // Call your API to check the status
+        axios
+          .get(`http://localhost:3001/api/check-status/${permitId}`)
+          .then(response => {
+            const status = response.data.status;
+            if (status === 'approved') {
+              setIsApproved(true);
+              setResp(true); // Show the approved modal
+              history('/cancel-permit')
+              clearInterval(interval); // Stop the interval once status is approved
+            }
+          })
+          .catch(error => {
+            console.error('Error checking status:', error);
+          });
+      }
+    }, 10000); // Check every 10 seconds
+  
+    // Cleanup interval when component unmounts or status is approved
+    return () => clearInterval(interval);
+  }, [resp]); // Only run this effect when resp changes
+  
 
   return (
     <div className='landing-page mx-auto'>
@@ -121,7 +152,19 @@ const LandingPagexx = () => {
           className='w-full max-w-md mx-auto border border-gray-300 mb-4'
         >
           <Text className='text-lg font-semibold'>To</Text>
-          <Text className='text-gray-700 mb-4'>John Doe</Text>
+          <Text className='text-gray-700 mb-4'>
+            {localStorage.getItem('userName')}
+          </Text>
+
+          <Text className='text-lg font-semibold'>Substation</Text>
+          {/* <Text className='text-gray-700 mb-4'>Githunguri </Text> */}
+          <TextInput
+            // label='Work Detail 1'
+            placeholder='Enter substation Name'
+            value={substation}
+            onChange={e => setSubstation(e.target.value)}
+            className='mb-3'
+          />
 
           <Text className='text-lg font-semibold mb-2'>
             For the following work to be carried out:
@@ -145,13 +188,18 @@ const LandingPagexx = () => {
             }
             className='mb-3'
           />
+          <TextInput
+            label='Work Detail 3'
+            placeholder='Enter work detail 3'
+            value={workDetails.workDetail3}
+            onChange={e =>
+              setWorkDetails({ ...workDetails, workDetail3: e.target.value })
+            }
+            className='mb-3'
+          />
         </Card>
 
-        {/* <SafetyDeclarationCard
-            title='A.'
-            description='I hereby declare that it is safe to work within the following defined limits in the proximity of Live HV / MV Apparatus.'
-            warning='ALL OTHER PARTS ARE DANGEROUS'
-          /> */}
+      
 
         <Card
           shadow='sm'
@@ -208,12 +256,7 @@ const LandingPagexx = () => {
           </Text>
         </Card>
 
-        {/* <SafetyDeclarationCard
-            title='B.'
-            description='I hereby declare that it is safe to work on the following H.V. Apparatus which is switched out, isolated from all live conductors and is connected to Earth.'
-            warning='ALL OTHER PARTS ARE DANGEROUS'
-          /> */}
-
+      
         <Card
           shadow='sm'
           padding='lg'
@@ -309,35 +352,35 @@ const LandingPagexx = () => {
           Submit
         </Button>
       </form>
-      {/* {isSubmitting && (
+
+      {resp === true && isApproved == false && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
-            <Loader size='lg' color='blue' className='mx-auto mb-4' type="dots" />
+            <Loader
+              size='lg'
+              color='blue'
+              className='mx-auto mb-4'
+              type='dots'
+            />
             <p className='text-lg font-semibold text-gray-700'>
               Waiting for approval...
             </p>
           </div>
         </div>
-      )} */}
+      )}
 
-      {isSubmitting && (
+      {resp === true && isApproved == true && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
-            {isApproved ? (
-              <>
-                <p className='text-lg font-semibold text-gray-700'>Approved</p>
-              </>
-            ) : (
-              <>
-                <Loader size='lg' color='blue' className='mx-auto mb-4' />
-                <p className='text-lg font-semibold text-gray-700'>
-                  Waiting for approval...
-                </p>
-              </>
-            )}
+          <CheckCircle className="w-10 h-10 text-green-500 animate-bounce" />
+            <p className='text-lg font-semibold text-gray-700'>
+              Approved
+            </p>
           </div>
         </div>
       )}
+
+  
     </div>
   )
 }

@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(cookieParser())
 // app.use(cors())
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173','http://localhost:5174'],
   credentials: true
 }
 app.use(cors(corsOptions))
@@ -77,8 +77,14 @@ app.get('/check-auth', (req, res) => {
 const Permit = require('./routes/permits/submit-permit');
 app.use('/api',Permit)
 
+const ApprovePermit = require('./routes/permits/permit-approval');
+app.use('/api',ApprovePermit)
+
 const Login = require('./routes/auth/login')
 app.use('/api', Login)
+
+const checkStatus = require('./routes/permits/check-status')
+app.use('/api', checkStatus)
 
 db.sequelize.sync().then(() => {
   console.log('*---------*')

@@ -308,7 +308,8 @@ function Login() {
                 if (response.status === 200) {
                     localStorage.setItem("authToken", response.data.id);
                     localStorage.setItem("userRole", response.data.role);
-                    navigate("/landingpage"); // Redirect to main page
+                    // navigate("/landingpage"); // Redirect to main page
+                    navigate("/land");
                 }
             } catch {
                 console.log("User not authenticated");
@@ -343,7 +344,8 @@ function Login() {
                 localStorage.setItem("authToken", response.data.id);
                 localStorage.setItem("userRole", response.data.role);
                 localStorage.setItem("userName", response.data.name);
-                navigate("/landingpage");
+                // navigate("/landingpage");
+                navigate("/land");
             }
         } catch (error) {
             setError(error.response?.data?.error || "Login failed. Try again.");
