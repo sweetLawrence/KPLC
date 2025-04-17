@@ -145,7 +145,7 @@ const LandingPagexx = () => {
         </div>
 
         <div className='title text-center mt-4'>
-          <Title order={1} className='text-[#002b57] font-bold text-[2em]'>
+          <Title order={1} className='text-[#002b57] font-bold text-[1.5em]'>
             Electrical Permit to Work
           </Title>
         </div>
