@@ -85,7 +85,7 @@ async function submitPermit (req, res) {
 router.post('/cancel-permit', (req, res) => {
   const { clearanceCompleted, earthConnections, systemControlEngineer } = req.body;
 
-  // Basic validation
+
   if (
     typeof clearanceCompleted !== 'boolean' ||
     !earthConnections ||
@@ -94,7 +94,7 @@ router.post('/cancel-permit', (req, res) => {
     return res.status(400).json({ message: 'Invalid or incomplete data.' });
   }
 
-  // Simulate saving the data (replace this with DB logic)
+
   const savedData = {
     clearanceCompleted,
     earthConnections,
@@ -104,14 +104,14 @@ router.post('/cancel-permit', (req, res) => {
 
   res.clearCookie('auth_token', {
     httpOnly: true,
-    secure: true,      // Only if using HTTPS
+    secure: true,      // with HTTPS (ngrok)
     sameSite: 'Strict',
     path: '/',
   });
 
   console.log('Permit cancellation received:', savedData);
 
-  // Respond with success
+ 
   res.status(200).json({
     message: 'Permit cancelled successfully.',
     data: savedData
