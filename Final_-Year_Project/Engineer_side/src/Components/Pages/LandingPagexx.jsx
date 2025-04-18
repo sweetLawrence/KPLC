@@ -124,7 +124,7 @@ const LandingPagexx = () => {
             // }
             else if (status === 'rejected') {
               setIsApproved(false)
-              alert(rejectionReason)
+              // alert(rejectionReason)
               // Show message in card
               setRejectionMessage(rejectionReason)
 
