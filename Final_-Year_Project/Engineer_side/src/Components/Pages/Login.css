@@ -480,6 +480,10 @@ html {
   .login-subtitle {
     margin-bottom: .5rem;
   }
+  .forgot-password {
+    margin-bottom: 1.2rem;
+    margin-top: -2%;
+  }
 
   .login-form {
     padding: 1.8rem;
