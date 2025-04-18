@@ -6,7 +6,9 @@ import {
   Button,
   Input,
   Title,
-  Image
+  Image,
+  Loader,
+  Modal
 } from '@mantine/core'
 import LOGO from '../../assets/images/LOGO3.png'
 import { Toaster, toast } from 'sonner'
@@ -18,6 +20,8 @@ const CancelPermit = () => {
   const [isChecked, setIsChecked] = useState(false)
   const [earthConnections, setEarthConnections] = useState('')
   const [systemControlEngineer, setSystemControlEngineer] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   const navigate = useNavigate()
 
@@ -26,6 +30,7 @@ const CancelPermit = () => {
   }
 
   const handleSubmit = async () => {
+    setIsSubmitting(true)
     const formData = {
       clearanceCompleted: isChecked,
       earthConnections,
@@ -33,11 +38,7 @@ const CancelPermit = () => {
     }
 
     try {
-      // const response = await axios.post(
-      //   'http://localhost:3001/api/cancel-permit',
-      //   formData,
-      //   { withCredentials: true }
-      // )
+    
       const response = await axiosInstance.post(
         '/api/cancel-permit',
         formData,
@@ -45,25 +46,19 @@ const CancelPermit = () => {
       )
 
       if (response.status === 200) {
-        toast.success('Permit cancelled successfully!')
-
-        // Clear cookies
-        // document.cookie.split(";").forEach((c) => {
-        //   document.cookie = c
-        //     .replace(/^ +/, "")
-        //     .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-        // });
+        setIsSubmitting(false)
+        // toast.success('Permit cancelled successfully!')
 
         document.cookie =
           'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
 
-        // Clear localStorage
         localStorage.clear()
 
-        // Redirect after short delay
+        setShowLogoutModal(true)
+
         setTimeout(() => {
           navigate('/')
-        }, 2000)
+        }, 10000)
       }
     } catch (error) {
       toast.error('An error occurred while cancelling the permit.')
@@ -82,7 +77,10 @@ const CancelPermit = () => {
           <div className='flex items-center justify-between w-full'>
             <h2 className='text-[#002b57] font-bold text-[1.5em] flex items-center bg-rd-300 w-full h-[50px]'>
               <span className='text-[#002b57] font-extrabold mx-auto'>
-                <Image src={LOGO} className='scal-75 scale-30 object-cover bg-ambr-200' />
+                <Image
+                  src={LOGO}
+                  className='scal-75 scale-30 object-cover bg-ambr-200'
+                />
               </span>
               <span className='text-[#002b57]'>
                 {/* The Kenya Power and Lighting Co. Ltd. */}
@@ -111,9 +109,13 @@ const CancelPermit = () => {
         <Text className='text-lg font-bold mb-2 text-[#002b57]'>CLEARANCE</Text>
         <Text className='text-gray-700 mb-4'>
           I hereby declare that all men under my charge have been withdrawn and
-          warned that it is NO LONGER SAFE to work on the apparatus specified on
-          the P.T.W. and that all gear, tool and ADDITIONAL EARTH CONNECTION are
-          clear and have been checked in.
+          warned that it is{' '}
+          <span className='font-bold text-red-500'>NO LONGER SAFE</span> to work
+          on the apparatus specified on the P.T.W. and that all gear, tool and{' '}
+          <span className='font-bold text-red-500'>
+            ADDITIONAL EARTH CONNECTION
+          </span>{' '}
+          are clear and have been checked in.
         </Text>
         <Checkbox
           label='I confirm that the clearance actions have been completed.'
@@ -123,9 +125,14 @@ const CancelPermit = () => {
         />
 
         {/* Cancellation Section */}
-        <Text className='text-lg font-bold mb-2 mt-6 text-[#002b57]'>CANCELLATION</Text>
-        <Text className='text-gray-700 mb-4'>
-          I hereby declare that I have checked in{' '}
+        <Text className='text-lg font-bold mb-2 mt-6 text-[#002b57]'>
+          CANCELLATION
+        </Text>
+        {/* <Text className='text-gray-700 mb-4'> */}
+        <>
+          <Text className='text-gray-700 font-semibold'>
+            I hereby declare that I have checked in{' '}
+          </Text>
           <Input
             value={earthConnections}
             onChange={e => setEarthConnections(e.target.value)}
@@ -133,7 +140,10 @@ const CancelPermit = () => {
             className='mt-2 mb-4'
             size='sm'
           />
-          and that with the Consent of{' '}
+          <Text className='text-gray-700 font-semibold'>
+            and that with the Consent of{' '}
+          </Text>
+
           <Input
             value={systemControlEngineer}
             onChange={e => setSystemControlEngineer(e.target.value)}
@@ -141,19 +151,50 @@ const CancelPermit = () => {
             className='mt-2 mb-4'
             size='sm'
           />
-          this Permit and all copies are cancelled.
-        </Text>
+          <Text className='text-gray-700 font-semibold'>
+            {' '}
+            this Permit and all copies are cancelled.
+          </Text>
+        </>
 
         {/* Submit Button */}
         <Button
           fullWidth
           className='mt-3'
           onClick={handleSubmit}
-          disabled={!isChecked || !earthConnections || !systemControlEngineer} // Disable the button unless conditions are met
+          disabled={!isChecked || !earthConnections || !systemControlEngineer}
         >
-          Submit
+          {' '}
+          {isSubmitting ? (
+            <>
+              <Loader color='white' size='sm' className='mr-2' />
+              Cancelling...
+            </>
+          ) : (
+            'Submit'
+          )}
         </Button>
       </Card>
+      <Modal
+        opened={showLogoutModal}
+        onClose={() => {}}
+        withCloseButton={false}
+        centered
+        size='sm'
+      >
+        <div className='text-center p-4'>
+          <Text size='lg' weight={600} className='text-[#14943f]'>
+            Permit cancelled successfully
+          </Text>
+          <Text size='lg' weight={600}>
+            Logging you out...
+          </Text>
+          <Text size='sm' color='dimmed' className='mt-2'>
+            Please wait while we redirect you to the homepage.
+          </Text>
+        </div>
+      </Modal>
+
       <Toaster position='top-right' richColors />
     </div>
   )

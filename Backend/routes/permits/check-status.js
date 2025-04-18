@@ -14,7 +14,7 @@ router.get('/check-status/:permitId', async (req, res) => {
 
     if (permit) {
       // Return the permit status if found
-      return res.json({ status: permit.status })
+      return res.json({ status: permit.status, rejectionReason:permit.comments })
     } else {
       // Return a 404 if permit not found
       return res.status(404).json({ message: 'Permit not found' })

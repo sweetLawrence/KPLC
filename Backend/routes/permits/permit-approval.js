@@ -27,7 +27,11 @@ router.post('/approve-permit/:permitId', async (req, res) => {
       permit.issueTime = permitPayload.issueTime
       await permit.save() // Save the updated permit in the database
 
-      return res.json({ message: 'p-success', permit })
+      return res.json({
+        message: 'p-success',
+        permit,
+        permitStatus: 'approved'
+      })
     } else {
       // Return 404 if the permit is not found
       return res.status(404).json({ message: 'Permit not found' })
@@ -63,7 +67,12 @@ router.post('/reject-permit/:permitId', async (req, res) => {
       permit.issueTime = permitPayload.issueTime
       await permit.save() // Save the updated permit in the database
 
-      return res.json({ message: 'p-failure', permit })
+      return res.json({
+        message: 'p-failure',
+        permit,
+        permitStatus: 'rejected',
+        rejectionReason: permitPayload.comments
+      })
     } else {
       // Return 404 if the permit is not found
       return res.status(404).json({ message: 'Permit not found' })

@@ -10,7 +10,7 @@ export default function ReceiptSection() {
       </Text>
 
       <Radio.Group name="agreement" className="mb-3">
-        <Radio value="agree" label="I Agree" className="mb-3" />
+        <Radio value="agree" label="I Agree" className="mb-3" required/>
       </Radio.Group>
     </Card>
   );

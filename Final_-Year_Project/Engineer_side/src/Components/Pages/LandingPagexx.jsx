@@ -18,7 +18,8 @@ import {
 import LOGO from '../../assets/images/LOGO3.png'
 import ReceiptSection from '../Sections/ReceiptSection'
 import { useNavigate } from 'react-router-dom'
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, XCircle, Clock } from 'lucide-react'
+
 import axiosInstance from '../../utils/axios'
 
 const LandingPagexx = () => {
@@ -44,6 +45,7 @@ const LandingPagexx = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [resp, setResp] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
+  const [rejectionMessage, setRejectionMessage] = useState('')
   const history = useNavigate()
 
   // Handle form submission
@@ -56,7 +58,11 @@ const LandingPagexx = () => {
       permitNumber: localStorage.getItem('permitNumber'),
       issuedTo: localStorage.getItem('userName'),
       substation,
-      workDetails: [workDetails.workDetail1, workDetails.workDetail2],
+      workDetails: [
+        workDetails.workDetail1,
+        workDetails.workDetail2,
+        workDetails.workDetail3
+      ],
       earthPoints: [earthPoints.earthPoint1, earthPoints.earthPoint2],
       isMVLVIsolated,
       earthConnections,
@@ -72,21 +78,17 @@ const LandingPagexx = () => {
       //   'http://localhost:3001/api/submit-permit',
       //   formData
       // )
-      const response = await axiosInstance.post(
-        '/api/submit-permit',
-        formData
-      )
+      const response = await axiosInstance.post('/api/submit-permit', formData)
       if (response) {
         localStorage.setItem('permitId', response.data.permit.id)
         setResp(true)
-        const status = response.data.permit.status
 
-        let approved =
-          status == 'pending' ? setIsApproved(false) : setIsApproved(true)
-        // setIsSubmitting(false)
+        setIsSubmitting(false)
       }
       console.log('Success:', response.data.permit)
     } catch (error) {
+      setIsSubmitting(false)
+      toast.error('Network Error')
       console.error(
         'Error:',
         error.response ? error.response.data : error.message
@@ -94,44 +96,77 @@ const LandingPagexx = () => {
     }
   }
 
-
   useEffect(() => {
     const interval = setInterval(() => {
       // Get the permitId from localStorage
-      const permitId = localStorage.getItem('permitId');
+      const permitId = localStorage.getItem('permitId')
       if (permitId) {
         // Call your API to check the status
         axiosInstance
           .get(`/api/check-status/${permitId}`)
           .then(response => {
-            const status = response.data.status;
+            const status = response.data.status
+            const rejectionReason =
+              response.data?.rejectionReason || 'Your request was rejected.'
+
             if (status === 'approved') {
-              setIsApproved(true);
-              setResp(true); // Show the approved modal
-              history('/cancel-permit')
-              clearInterval(interval); // Stop the interval once status is approved
+              setIsApproved(true)
+
+              setTimeout(() => {
+                // document.cookie = 'token=; Max-Age=0; path=/;'
+                // localStorage.clear()
+                // window.location.href = '/'
+                history('/cancel-permit')
+              }, 5000)
             }
+            // else if (status === 'pending') {
+            // setIsApproved(false)
+            // }
+            else if (status === 'rejected') {
+              setIsApproved(false)
+              alert(rejectionReason)
+              // Show message in card
+              setRejectionMessage(rejectionReason)
+
+              // Clear cookies and redirect after delay
+              setTimeout(() => {
+                document.cookie = 'token=; Max-Age=0; path=/;'
+                localStorage.clear()
+                // window.location.href = '/'
+                history('/')
+              }, 5000) // 5 seconds before redirect
+            }
+
+            // if (status === 'approved') {
+            //   setIsApproved(true)
+            //   setResp(true) // Show the approved modal
+            //   history('/cancel-permit')
+            //   clearInterval(interval) // Stop the interval once status is approved
+            // }
           })
           .catch(error => {
-            console.error('Error checking status:', error);
-          });
+            console.error('Error checking status:', error)
+          })
       }
-    }, 10000); // Check every 10 seconds
-  
+    }, 10000) // Check every 10 seconds
+
     // Cleanup interval when component unmounts or status is approved
-    return () => clearInterval(interval);
-  }, [resp]); // Only run this effect when resp changes
-  
+    return () => clearInterval(interval)
+  }, [resp]) // Only run this effect when resp changes
 
   return (
     <div className='landing-page mx-auto'>
+      <Toaster position='top-right' richColors />
       {/* <div className='header bg-[#f1f8ff] px-6 py-4  z-50 w-full sticky -top-[20%] left-0 shadow-md'> */}
       <div className='header bg-[#f1f8ff] px-6 py-4 z-50 w-full sticky top-0 left-0 shadow-md'>
         <div className='upper flex flex-col items-center justify-between py-1'>
           <div className='flex items-center justify-between w-full'>
             <h2 className='text-[#002b57] font-bold flex items-center bg-rd-300 w-full h-[50px]'>
               <span className='text-[#002b57] font-extrabold mx-auto'>
-                <Image src={LOGO} className='scale-30 object-cover bg-ambr-200' />
+                <Image
+                  src={LOGO}
+                  className='scale-30 object-cover bg-ambr-200'
+                />
               </span>
               <span className='text-[#002b57]'>
                 {/* The Kenya Power and Lighting Co. Ltd. */}
@@ -172,6 +207,7 @@ const LandingPagexx = () => {
             value={substation}
             onChange={e => setSubstation(e.target.value)}
             className='mb-3'
+            required
           />
 
           <Text className='text-lg font-bold mb-2 text-[#002b57]'>
@@ -186,6 +222,7 @@ const LandingPagexx = () => {
               setWorkDetails({ ...workDetails, workDetail1: e.target.value })
             }
             className='mb-3'
+            required
           />
           <TextInput
             label='Work Detail 2'
@@ -195,6 +232,7 @@ const LandingPagexx = () => {
               setWorkDetails({ ...workDetails, workDetail2: e.target.value })
             }
             className='mb-3'
+            required
           />
           <TextInput
             label='Work Detail 3'
@@ -204,10 +242,9 @@ const LandingPagexx = () => {
               setWorkDetails({ ...workDetails, workDetail3: e.target.value })
             }
             className='mb-3'
+            required
           />
         </Card>
-
-      
 
         <Card
           shadow='sm'
@@ -226,8 +263,9 @@ const LandingPagexx = () => {
             className='mb-3'
             value={isIsolationA}
             onChange={setIsIsolationA}
+            required
           >
-            <Radio value='yes' label='Yes' className='mb-3' />
+            <Radio value='yes' label='Yes' className='mb-3' required />
             <Radio value='no' label='No' />
           </Radio.Group>
 
@@ -255,7 +293,7 @@ const LandingPagexx = () => {
             value={isIsolationB}
             onChange={setIsIsolationB}
           >
-            <Radio value='yes' label='Yes' className='mb-3' />
+            <Radio value='yes' label='Yes' className='mb-3' required />
             <Radio value='no' label='No' />
           </Radio.Group>
 
@@ -264,7 +302,6 @@ const LandingPagexx = () => {
           </Text>
         </Card>
 
-      
         <Card
           shadow='sm'
           padding='lg'
@@ -284,7 +321,7 @@ const LandingPagexx = () => {
             name='isolation'
             className='mb-3'
           >
-            <Radio value='yes' label='Yes' className='mb-3' />
+            <Radio value='yes' label='Yes' className='mb-3' required />
             <Radio value='no' label='No' />
           </Radio.Group>
         </Card>
@@ -310,11 +347,13 @@ const LandingPagexx = () => {
               setEarthPoints({ ...earthPoints, earthPoint1: e.target.value })
             }
             className='mb-3'
+            required
           />
           <TextInput
             label='Earth Point 2'
             placeholder='Enter Earth Point 2'
             value={earthPoints.earthPoint2}
+            required
             onChange={e =>
               setEarthPoints({ ...earthPoints, earthPoint2: e.target.value })
             }
@@ -341,6 +380,7 @@ const LandingPagexx = () => {
             onChange={setEarthConnections}
             min={0}
             className='mb-3'
+            required
           />
 
           <TextInput
@@ -348,15 +388,23 @@ const LandingPagexx = () => {
             placeholder='Enter name'
             value={issuedWithConsent}
             onChange={e => setIssuedWithConsent(e.target.value)}
+            required
           />
         </Card>
 
         <ReceiptSection />
         <Button
+          // leftSection={<IconPhoto size={14} />}
           type='submit'
           fullWidth
+          disabled={isSubmitting}
           className='mt-3 mb-10 h-[3em] text-[1.2em] bg-blue-500 hover:bg-blue-600 my-4 w-[92%] mx-auto '
         >
+          {isSubmitting ? (
+            <Loader color='white' size='sm' className='mr-2' />
+          ) : (
+            ' '
+          )}
           Submit
         </Button>
       </form>
@@ -377,18 +425,60 @@ const LandingPagexx = () => {
         </div>
       )}
 
-      {resp === true && isApproved == true && (
+      {/* {resp === true && isApproved == true && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
-          <CheckCircle className="w-10 h-10 text-green-500 animate-bounce" />
-            <p className='text-lg font-semibold text-gray-700'>
-              Approved
-            </p>
+            <CheckCircle className='w-10 h-10 text-green-500 animate-bounce' />
+            <p className='text-lg font-semibold text-gray-700'>Approved</p>
+          </div>
+        </div>
+      )} */}
+      {resp === true && (
+        <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
+          <div className='bg-white p-6 rounded-lg shadow-lg text-center w-[70%] py-10'>
+            {isApproved === true ? (
+              <>
+                <CheckCircle className='w-10 h-10 text-green-500 animate-bounce mx-auto' />
+                <p className='text-lg font-semibold text-gray-700 mt-2'>
+                  Your Permit Request has been Approved
+                  {/* <p>{localStorage.getItem('permitNumber')}</p> */}
+                </p>
+              </>
+            ) : rejectionMessage ? (
+              <div className='w-[100%]'>
+                <XCircle className='w-20 h-20 text-red-500 mx-auto' />
+                <p className='text-lg font-semibold text-gray-700 mt-2'>
+                  Your permit request has been rejected
+                </p>
+                <p className='text-sm text-red-600 mt-1'>Reason :  {rejectionMessage}</p>
+                <p className='text-sm text-gray-500 mt-2 italic'>
+                  Redirecting to login...
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* <Clock className='w-10 h-10 text-yellow-500 animate-pulse mx-auto' /> */}
+                <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
+                  <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
+                    <Loader
+                      size='lg'
+                      color='blue'
+                      className='mx-auto mb-4'
+                      type='dots'
+                    />
+                    <p className='text-lg font-semibold text-gray-700'>
+                      Waiting for approval...
+                    </p>
+                  </div>
+                </div>
+                {/* <p className='text-lg font-semibold text-gray-700 mt-2'>
+                  Pending
+                </p> */}
+              </>
+            )}
           </div>
         </div>
       )}
-
-  
     </div>
   )
 }
