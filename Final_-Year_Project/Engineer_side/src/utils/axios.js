@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let prod_base_url = 'https://c09f-102-212-236-173.ngrok-free.app';
+let prod_base_url = 'https://953a-102-212-236-173.ngrok-free.app';
 let local_base_url = 'http://localhost:3001'
 
 const getBaseURL = () => {
