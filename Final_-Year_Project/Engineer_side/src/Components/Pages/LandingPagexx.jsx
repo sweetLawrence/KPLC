@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import axios from 'axios'
 import { Toaster, toast } from 'sonner'
 import './landing.css'
 import {
@@ -74,10 +73,7 @@ const LandingPagexx = () => {
     console.log(formData)
 
     try {
-      // const response = await axios.post(
-      //   'http://localhost:3001/api/submit-permit',
-      //   formData
-      // )
+ 
       const response = await axiosInstance.post('/api/submit-permit', formData)
       if (response) {
         localStorage.setItem('permitId', response.data.permit.id)
@@ -98,10 +94,10 @@ const LandingPagexx = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Get the permitId from localStorage
+     
       const permitId = localStorage.getItem('permitId')
       if (permitId) {
-        // Call your API to check the status
+        
         axiosInstance
           .get(`/api/check-status/${permitId}`)
           .then(response => {
@@ -113,46 +109,35 @@ const LandingPagexx = () => {
               setIsApproved(true)
 
               setTimeout(() => {
-                // document.cookie = 'token=; Max-Age=0; path=/;'
-                // localStorage.clear()
-                // window.location.href = '/'
+          
                 history('/cancel-permit')
               }, 5000)
             }
-            // else if (status === 'pending') {
-            // setIsApproved(false)
-            // }
+          
             else if (status === 'rejected') {
               setIsApproved(false)
-              // alert(rejectionReason)
-              // Show message in card
+      
               setRejectionMessage(rejectionReason)
 
-              // Clear cookies and redirect after delay
+              // Clear cookies
               setTimeout(() => {
                 document.cookie = 'token=; Max-Age=0; path=/;'
                 localStorage.clear()
-                // window.location.href = '/'
+
                 history('/')
-              }, 5000) // 5 seconds before redirect
+              }, 5000) 
             }
 
-            // if (status === 'approved') {
-            //   setIsApproved(true)
-            //   setResp(true) // Show the approved modal
-            //   history('/cancel-permit')
-            //   clearInterval(interval) // Stop the interval once status is approved
-            // }
           })
           .catch(error => {
             console.error('Error checking status:', error)
           })
       }
-    }, 10000) // Check every 10 seconds
+    }, 10000) 
 
-    // Cleanup interval when component unmounts or status is approved
+    // Cleanup 
     return () => clearInterval(interval)
-  }, [resp]) // Only run this effect when resp changes
+  }, [resp]) 
 
   return (
     <div className='landing-page mx-auto'>
@@ -394,7 +379,6 @@ const LandingPagexx = () => {
 
         <ReceiptSection />
         <Button
-          // leftSection={<IconPhoto size={14} />}
           type='submit'
           fullWidth
           disabled={isSubmitting}
@@ -425,14 +409,7 @@ const LandingPagexx = () => {
         </div>
       )}
 
-      {/* {resp === true && isApproved == true && (
-        <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
-          <div className='bg-white p-6 rounded-lg shadow-lg text-center'>
-            <CheckCircle className='w-10 h-10 text-green-500 animate-bounce' />
-            <p className='text-lg font-semibold text-gray-700'>Approved</p>
-          </div>
-        </div>
-      )} */}
+ 
       {resp === true && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center w-[70%] py-10'>

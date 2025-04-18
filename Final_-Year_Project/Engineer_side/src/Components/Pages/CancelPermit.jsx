@@ -12,7 +12,6 @@ import {
 } from '@mantine/core'
 import LOGO from '../../assets/images/LOGO3.png'
 import { Toaster, toast } from 'sonner'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../utils/axios'
 
@@ -65,7 +64,7 @@ const CancelPermit = () => {
       console.error('Cancel Permit Error:', error)
     }
 
-    // Log form data to the console
+
     console.log('Form submitted with data: ', formData)
   }
 

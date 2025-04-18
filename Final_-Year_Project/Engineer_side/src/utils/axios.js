@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+let prod_base_url = 'https://c09f-102-212-236-173.ngrok-free.app';
+let local_base_url = 'http://localhost:3001'
+
 const getBaseURL = () => {
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    return isLocalhost ? 'http://localhost:3001' : 'https://c09f-102-212-236-173.ngrok-free.app';
-    // return isLocalhost ? 'https://b85e-102-212-236-175.ngrok-free.app' : 'https://b85e-102-212-236-175.ngrok-free.app';
+    return isLocalhost ? `${local_base_url}` : `${prod_base_url}`;
   };
 
   const getToken = () => {
