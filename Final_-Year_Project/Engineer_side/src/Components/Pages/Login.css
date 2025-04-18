@@ -469,6 +469,13 @@ html {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .login-form h1 {
+    margin-bottom: .1em;
+  }
+
+  .login-subtitle {
+    margin-bottom: .5rem;
+  }
 
   .login-form {
     padding: 1.8rem;
