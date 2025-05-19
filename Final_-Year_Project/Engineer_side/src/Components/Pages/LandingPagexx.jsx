@@ -73,7 +73,6 @@ const LandingPagexx = () => {
     console.log(formData)
 
     try {
- 
       const response = await axiosInstance.post('/api/submit-permit', formData)
       if (response) {
         localStorage.setItem('permitId', response.data.permit.id)
@@ -94,10 +93,8 @@ const LandingPagexx = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-     
       const permitId = localStorage.getItem('permitId')
       if (permitId) {
-        
         axiosInstance
           .get(`/api/check-status/${permitId}`)
           .then(response => {
@@ -109,35 +106,33 @@ const LandingPagexx = () => {
               setIsApproved(true)
 
               setTimeout(() => {
-          
                 history('/cancel-permit')
               }, 5000)
-            }
-          
-            else if (status === 'rejected') {
+            } else if (status === 'rejected') {
               setIsApproved(false)
-      
+
               setRejectionMessage(rejectionReason)
 
               // Clear cookies
               setTimeout(() => {
-                document.cookie = 'token=; Max-Age=0; path=/;'
+                // document.cookie = 'token=; Max-Age=0; path=/;'
+                document.cookie =
+                  'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
                 localStorage.clear()
 
                 history('/')
-              }, 5000) 
+              }, 5000)
             }
-
           })
           .catch(error => {
             console.error('Error checking status:', error)
           })
       }
-    }, 10000) 
+    }, 10000)
 
-    // Cleanup 
+    // Cleanup
     return () => clearInterval(interval)
-  }, [resp]) 
+  }, [resp])
 
   return (
     <div className='landing-page mx-auto'>
@@ -409,7 +404,6 @@ const LandingPagexx = () => {
         </div>
       )}
 
- 
       {resp === true && (
         <div className='fixed inset-0 bg-gray-200 bg-opacity-30 backdrop-blur-sm flex items-center justify-center z-50'>
           <div className='bg-white p-6 rounded-lg shadow-lg text-center w-[70%] py-10'>
@@ -427,7 +421,9 @@ const LandingPagexx = () => {
                 <p className='text-lg font-semibold text-gray-700 mt-2'>
                   Your permit request has been rejected
                 </p>
-                <p className='text-sm text-red-600 mt-1'>Reason :  {rejectionMessage}</p>
+                <p className='text-sm text-red-600 mt-1'>
+                  Reason : {rejectionMessage}
+                </p>
                 <p className='text-sm text-gray-500 mt-2 italic'>
                   Redirecting to login...
                 </p>
